@@ -33,7 +33,8 @@ public class ColorEventHandler {
             event.setRed((float) colors.x);
             event.setGreen((float) colors.y);
             event.setBlue((float) colors.z);
-        }
+        } else
+            UpdateOceanic.proxy.getFogRenderHelper().resetFog();
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)

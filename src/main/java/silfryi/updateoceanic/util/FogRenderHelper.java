@@ -10,6 +10,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import silfryi.updateoceanic.blocks.BlockNewStaticLiquid;
 
 @SideOnly(Side.CLIENT)
 public class FogRenderHelper {
@@ -22,61 +23,58 @@ public class FogRenderHelper {
 
     public Vec3d getAndUpdateColor(EntityPlayer player,World world) {
 
-        if (world.getBlockState(player.getPosition().up()).getBlock() == Blocks.WATER) {
-            long time = world.getTotalWorldTime();
-            int baseBiomeColorization = getWaterFogColor(world.getBiome(player.getPosition()));
-            if (waterFogUpdateTime < 0L) {
-                lastWaterFogColor = baseBiomeColorization;
-                waterFogColor = baseBiomeColorization;
-                waterFogUpdateTime = time;
-            }
-
-            float lastRed = lastWaterFogColor >> 16 & 255;
-            float lastGreen = lastWaterFogColor >> 8 & 255;
-            float lastBlue = lastWaterFogColor & 255;
-            float newRed = waterFogColor >> 16 & 255;
-            float newGreen = waterFogColor >> 8 & 255;
-            float newBlue = waterFogColor & 255;
-
-            float f = MathHelper.clamp((float)(time - waterFogUpdateTime) / 100.0F, 0.0F, 1.0F);
-            float f1 = newRed + f * (lastRed - newRed);
-            float f2 = newRed + f * (lastGreen - newGreen);
-            float f3 = newRed + f * (lastBlue - newBlue);
-            red = f1 / 255.0F;
-            green = f2 / 255.0F;
-            blue = f3 / 255.0F;
-
-            if (lastWaterFogColor != baseBiomeColorization) {
-                lastWaterFogColor = baseBiomeColorization;
-                waterFogColor = MathHelper.floor(f1) << 16 | MathHelper.floor(f2) << 8 | MathHelper.floor(f3);
-                waterFogUpdateTime = time;
-            }
-
-            double d0 = player.posY * 0.03125D;
-            if (d0 < 1.0D) {
-                if (d0 < 0.0D) d0 = 0.0D;
-
-                d0 = d0 * d0;
-                red = (float)((double)red * d0);
-                green = (float)((double)green * d0);
-                blue = (float)((double)blue * d0);
-            }
-
-            float waterBrightness = FogRenderHelper.getWaterBrightness(player);
-
-            float f9 = Math.min(1.0F / red, Math.min(1.0F / green, 1.0F / blue));
-            if (Float.isInfinite(f9)) f9 = Math.nextAfter(f9, 0.0);
-            red = red * (1.0F - waterBrightness) + red * f9 * waterBrightness;
-            green = green * (1.0F - waterBrightness) + green * f9 * waterBrightness;
-            blue = blue * (1.0F - waterBrightness) + blue * f9 * waterBrightness;
-
-            System.out.println(red * 255 + " " + green * 255 + " " + blue * 255);
-
-            return new Vec3d(red, green, blue);
-        }  else {
-            waterFogUpdateTime = -1L;
-            return new Vec3d(1, 1, 1);
+        long time = world.getTotalWorldTime();
+        int baseBiomeColorization = getWaterFogColor(world.getBiome(player.getPosition()));
+        if (waterFogUpdateTime < 0L) {
+            lastWaterFogColor = baseBiomeColorization;
+            waterFogColor = baseBiomeColorization;
+            waterFogUpdateTime = time;
         }
+
+        float lastRed = lastWaterFogColor >> 16 & 255;
+        float lastGreen = lastWaterFogColor >> 8 & 255;
+        float lastBlue = lastWaterFogColor & 255;
+        float newRed = waterFogColor >> 16 & 255;
+        float newGreen = waterFogColor >> 8 & 255;
+        float newBlue = waterFogColor & 255;
+
+        float f = MathHelper.clamp((float) (time - waterFogUpdateTime) / 100.0F, 0.0F, 1.0F);
+        float f1 = newRed + f * (lastRed - newRed);
+        float f2 = newRed + f * (lastGreen - newGreen);
+        float f3 = newRed + f * (lastBlue - newBlue);
+        red = f1 / 255.0F;
+        green = f2 / 255.0F;
+        blue = f3 / 255.0F;
+
+        if (lastWaterFogColor != baseBiomeColorization) {
+            lastWaterFogColor = baseBiomeColorization;
+            waterFogColor = MathHelper.floor(f1) << 16 | MathHelper.floor(f2) << 8 | MathHelper.floor(f3);
+            waterFogUpdateTime = time;
+        }
+
+        double d0 = player.posY * 0.03125D;
+        if (d0 < 1.0D) {
+            if (d0 < 0.0D) d0 = 0.0D;
+
+            d0 = d0 * d0;
+            red = (float) ((double) red * d0);
+            green = (float) ((double) green * d0);
+            blue = (float) ((double) blue * d0);
+        }
+
+        float waterBrightness = FogRenderHelper.getWaterBrightness(player);
+
+        float f9 = Math.min(1.0F / red, Math.min(1.0F / green, 1.0F / blue));
+        if (Float.isInfinite(f9)) f9 = Math.nextAfter(f9, 0.0);
+        red = red * (1.0F - waterBrightness) + red * f9 * waterBrightness;
+        green = green * (1.0F - waterBrightness) + green * f9 * waterBrightness;
+        blue = blue * (1.0F - waterBrightness) + blue * f9 * waterBrightness;
+
+        return new Vec3d(red, green, blue);
+    }
+
+    public void resetFog() {
+        waterFogUpdateTime = -1L;
     }
 
     public static float getFogDensity(EntityPlayer player, World world) {

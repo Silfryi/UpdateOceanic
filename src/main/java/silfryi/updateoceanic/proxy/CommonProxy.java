@@ -1,13 +1,10 @@
 package silfryi.updateoceanic.proxy;
 
-import net.minecraftforge.common.MinecraftForge;
-import silfryi.updateoceanic.blocks.UOBlocks;
 import silfryi.updateoceanic.util.FogRenderHelper;
 
 public class CommonProxy {
 
     public void registerEventHandlers() {
-        MinecraftForge.EVENT_BUS.register(new UOBlocks());
     }
 
     public void preInit() {
@@ -17,7 +14,6 @@ public class CommonProxy {
 
     public void init() {
         // TODO Auto-generated method stub
-
     }
 
     public void preInitBlocks() {
