@@ -16,19 +16,18 @@ import static net.minecraft.client.renderer.GlStateManager.FogMode.EXP2;
 
 public class ColorEventHandler {
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
+    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void onFogDensityEvent(EntityViewRenderEvent.FogDensity event) {
-        if (event.getEntity().world.getBlockState(event.getEntity().getPosition().up()).getBlock() instanceof BlockLiquid && event.getEntity() instanceof EntityPlayer) {
+        if (event.getEntity().world.getBlockState(event.getEntity().getPosition().up().add(-0.5, 0, -0.5)).getBlock() instanceof BlockLiquid && event.getEntity() instanceof EntityPlayer) {
             GlStateManager.setFog(EXP2);
             event.setDensity(FogRenderHelper.getFogDensity((EntityPlayer) event.getEntity(), event.getEntity().world));
             event.setCanceled(true);
         }
-
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
+    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void onFogColorsEvent(EntityViewRenderEvent.FogColors event) {
-        if (event.getEntity().world.getBlockState(event.getEntity().getPosition().up()).getBlock() instanceof BlockLiquid && event.getEntity() instanceof EntityPlayer) {
+        if (event.getEntity().world.getBlockState(event.getEntity().getPosition().up().add(-0.5, 0, -0.5)).getBlock() instanceof BlockLiquid && event.getEntity() instanceof EntityPlayer) {
             Vec3d colors = UpdateOceanic.proxy.getFogRenderHelper().getAndUpdateColor((EntityPlayer) event.getEntity(), event.getEntity().world);
             event.setRed((float) colors.x);
             event.setGreen((float) colors.y);

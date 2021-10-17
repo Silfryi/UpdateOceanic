@@ -24,7 +24,7 @@ public class FogRenderHelper {
     public Vec3d getAndUpdateColor(EntityPlayer player,World world) {
 
         long time = world.getTotalWorldTime();
-        int baseBiomeColorization = getWaterFogColor(world.getBiome(player.getPosition()));
+        int baseBiomeColorization = getWaterFogColor(world.getBiome(player.getPosition().add(-0.5, 0, -0.5)));
         if (waterFogUpdateTime < 0L) {
             lastWaterFogColor = baseBiomeColorization;
             waterFogColor = baseBiomeColorization;
@@ -40,8 +40,8 @@ public class FogRenderHelper {
 
         float f = MathHelper.clamp((float) (time - waterFogUpdateTime) / 100.0F, 0.0F, 1.0F);
         float f1 = newRed + f * (lastRed - newRed);
-        float f2 = newRed + f * (lastGreen - newGreen);
-        float f3 = newRed + f * (lastBlue - newBlue);
+        float f2 = newGreen + f * (lastGreen - newGreen);
+        float f3 = newBlue + f * (lastBlue - newBlue);
         red = f1 / 255.0F;
         green = f2 / 255.0F;
         blue = f3 / 255.0F;
