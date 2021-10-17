@@ -1,0 +1,16 @@
+[
+{
+  "modid": "updateoceanic",
+  "name": "Update Oceanic",
+  "description": "Updates the 1.12 oceans to behave in ways similar to 1.13 oceans, but adapted slightly to be easier to implement.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Silfryi Kalsandryn"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
