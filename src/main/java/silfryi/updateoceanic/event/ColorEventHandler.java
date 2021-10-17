@@ -9,6 +9,7 @@ import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import silfryi.updateoceanic.UpdateOceanic;
+import silfryi.updateoceanic.biomes.BiomeWaterColorOverride;
 import silfryi.updateoceanic.util.ColorShiftHelper;
 import silfryi.updateoceanic.util.FogRenderHelper;
 
@@ -38,7 +39,7 @@ public class ColorEventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public void onBiomeWaterColorsEvent(BiomeEvent.GetWaterColor event) {
-        //if (event.getBiome() instanceof  BiomeNoColorChanges) return;
+        if (event.getBiome() instanceof BiomeWaterColorOverride) return;
         if (event.getOriginalColor() == 14745518) event.setNewColor(6388580); //swamps have special handling for new vMC color
         else if (event.getOriginalColor() == 16777215) event.setNewColor(4159204); //anything with the default water color have special handling for new vMC color
         else
